@@ -1,5 +1,6 @@
 package com.model2.mvc.service.user.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,11 @@ public class UserServiceImpl implements UserService{
 
 	public Map<String,Object> getUserList(Search search) throws Exception {
 		return userDao.getUserList(search);
+	}
+	
+	public List<String> autoComplete(String keyword) throws Exception{
+		System.out.println("UserServiceImpl autoComplete Start");
+		return userDao.autoComplete(keyword);
 	}
 
 	

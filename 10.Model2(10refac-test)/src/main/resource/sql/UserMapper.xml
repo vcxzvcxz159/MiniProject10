@@ -103,4 +103,14 @@
 		WHERE row_seq BETWEEN ((#{currentPage}-1)*#{pageSize} + 1) AND (#{currentPage} * #{pageSize})
   	</select>
   	
+  	<!-- auto Complete -->
+  	<select id="autoComplete" parameterType="string" resultType="string">
+  		SELECT user_id
+  		FROM users
+  		<where>
+			user_id LIKE '%'||#{keyword}||'%'
+  		</where>
+  		ORDER BY user_id
+  	</select>
+  	
 </mapper>

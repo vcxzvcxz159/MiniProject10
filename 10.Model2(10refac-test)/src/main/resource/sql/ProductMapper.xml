@@ -99,14 +99,6 @@
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
   	</select>
   	
-  	<!-- auto Complete -->
-  	<select id="autoComplete" parameterType="com.model2.mvc.common.Search" resultType="list">
-  		SELECT prod_name
-  		FROM product
-  		<where>
-			prod_name LIKE '%'||#{searchKeyword}||'%'
-  		</where>
-  		ORDER BY prod_name
-  	</select>
+  	
 	
 </mapper>

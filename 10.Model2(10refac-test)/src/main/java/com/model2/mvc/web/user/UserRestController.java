@@ -1,6 +1,7 @@
 package com.model2.mvc.web.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -90,7 +91,6 @@ public class UserRestController {
 	public User addUser(@RequestBody User user) throws Exception{
 		
 		System.out.println("/user/json/addUser : POST");
-		
 		System.out.println("::" + user);
 		int resultRow = userService.addUser(user);
 		
@@ -144,6 +144,8 @@ public class UserRestController {
 		}
 		search.setPageSize(pageSize);
 		
+		System.out.println("json/listUser currentPage : " + search.getCurrentPage());
+		
 		// Business logic 수행
 		Map<String, Object> map = userService.getUserList(search);
 		
@@ -154,7 +156,19 @@ public class UserRestController {
 		
 		map.remove("totalCount");
 		
+		//map에 있는거 : list, totalCount, resultPage, search
 		return map;
+	}
+	
+	@RequestMapping(value="json/autoComplete/{keyword}", method=RequestMethod.GET)
+	public List<String> autoComplete(@PathVariable String keyword) throws Exception{
+		
+		System.out.println("/user/json/autoComplete : GET");
+		
+		// Business logic 수행
+		List<String> list = userService.autoComplete(keyword);
+		
+		return list;
 	}
 	
 }

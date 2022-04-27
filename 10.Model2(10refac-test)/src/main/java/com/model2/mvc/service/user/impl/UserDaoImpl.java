@@ -1,5 +1,6 @@
 package com.model2.mvc.service.user.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,12 @@ public class UserDaoImpl implements UserDao{
 		return map;
 	}
 
-	
+	public List<String> autoComplete(String keyword) throws Exception{
+		System.out.println("UserDaoImpl autoComplete Start");
+		System.out.println("keyword : " + keyword);
+		List<String> list = sqlSession.selectList("UserMapper.autoComplete", keyword);
+		System.out.println("UserDaoImpl autoComlete End");
+		return list;
+	}
 	
 }

@@ -11,19 +11,91 @@
 	<title>회원 목록 조회</title>
 	
 	<link rel="stylesheet" href="/css/admin.css" type="text/css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	
 	<!-- CDN(Content Delivery Network) 호스트 사용 -->
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script type="text/javascript">
 	
+		$(window).bind("scroll", function(){
+			if($(window).scrollTop() == $(document).height() - $(window).height()){
+				console.log("작동!!")
+				var c_Page = $("#currentPage").val();
+				
+				c_Page = Number(c_Page) +1;
+				$.ajax(
+						{
+							url : "/user/json/listUser" ,
+							method : "POST" ,
+							data : JSON.stringify({
+								currentPage : c_Page
+							}),
+							dataType : "json" ,
+							headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+							},
+							success : function(JSONData , status) {
+							
+								$("#currentPage").val(c_Page);
+								
+								console.log("currentPage : " + $("#currentPage").val());
+								
+								console.log("JSONData : " + JSONData.list[0].userId);
+								console.log("userName : " + JSONData.list[0].userName);
+								console.log("email : " + JSONData.list[0].email);
+								
+								
+
+							}
+						}		
+					);
+			}
+		});
+
+		
+		
+	
 		// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
-		function fncGetUserList(currentPage) {
+		function fncGetList(currentPage) {
 			$("#currentPage").val(currentPage)
 			$("form").attr("method" , "POST").attr("action" , "/user/listUser").submit();
 		}
 
 		//==>"검색" ,  userId link  Event 연결 및 처리
+		
+		
+		
 		 $(function() {
+			 
+			 $("#searchKeyword").bind("keypress", function(){
+					
+					var keyword = $("#searchKeyword").val();
+					
+					$.ajax(
+						{
+							url : "/user/json/autoComplete/"+keyword ,
+							method : "GET" ,
+							dataType : "json" ,
+							headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+							},
+							success : function(JSONData , status) {
+
+								console.log("JSONData : " + JSONData);
+								
+								$("#searchKeyword").autocomplete({
+									source : JSONData,
+									minLength : 1,
+									delay : 500
+								}); 
+								
+							}
+						}		
+					);
+				});
 			 
 			//==> 검색 Event 연결처리부분
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -122,7 +194,7 @@
 				<option value="0"  ${ ! empty search.searchCondition && search.searchCondition==0 ? "selected" : "" }>회원ID</option>
 				<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>회원명</option>
 			</select>
-			<input type="text" name="searchKeyword" 
+			<input type="text" id="searchKeyword" name="searchKeyword" 
 						value="${! empty search.searchKeyword ? search.searchKeyword : ""}"  
 						class="ct_input_g" style="width:200px; height:20px" > 
 		</td>
@@ -184,20 +256,20 @@
 
 	</c:forEach>
 </table>
+<input type="hidden" id="currentPage" name="currentPage" value=""/>
 
-
-<!-- PageNavigation Start... -->
+<%-- <!-- PageNavigation Start... -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top:10px;">
 	<tr>
 		<td align="center">
-		   <input type="hidden" id="currentPage" name="currentPage" value=""/>
+		   
 	
 			<jsp:include page="../common/pageNavigator.jsp"/>	
 			
     	</td>
 	</tr>
 </table>
-<!-- PageNavigation End... -->
+<!-- PageNavigation End... --> --%>
 
 </form>
 </div>

@@ -58,16 +58,6 @@
 		//==> 아래와 같이 정의한 이유는 ??
 		$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
 		
-		$(function(){
-			$("#searchKeyword").autocomplete({
-				source : ,// 리스트
-				focus : function(event, ui){
-					return false;
-				},
-				
-			});
-		});
-		
 	});
 	
 	function notLogin(){
