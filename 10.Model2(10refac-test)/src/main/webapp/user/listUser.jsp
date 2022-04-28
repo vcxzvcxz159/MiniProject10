@@ -39,15 +39,34 @@
 							success : function(JSONData , status) {
 							
 								$("#currentPage").val(c_Page);
-								
-								console.log("currentPage : " + $("#currentPage").val());
-								
-								console.log("JSONData : " + JSONData.list[0].userId);
-								console.log("userName : " + JSONData.list[0].userName);
-								console.log("email : " + JSONData.list[0].email);
-								
-								
+								var HtmlString = ""
 
+								for(var i=0; i<JSONData.list.length; i++){
+									/* console.log("JSONData : " + JSONData.list[i].userId);
+									console.log("userName : " + JSONData.list[i].userName);
+									console.log("email : " + JSONData.list[i].email); */	
+									HtmlString += "<tr class='ct_list_pop'>"
+											+ "<td align='center'>10</td>"
+											+ "<td></td>"
+											+ "<td align='left'>"+JSONData.list[i].userId+"</td>"
+											+ "<td></td>"
+											+ "<td align='left'>"+JSONData.list[i].userName+"</td>"
+											+ "<td></td>"
+											+ "<td align='left'>"+JSONData.list[i].email+"</td>"
+											+ "</tr>"
+											+ "<tr>"
+											+ "<td id="+JSONData.list[i].userId+" colspan='11' bgcolor='D6D7D6' height='1'></td>"
+											+ "</tr>"
+								}
+								
+								/* console.log(HtmlString); */
+								
+								$("#mainTable").append(HtmlString);
+								
+								$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
+								
+								//==> 아래와 같이 정의한 이유는 ??
+								$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
 							}
 						}		
 					);
@@ -212,7 +231,7 @@
 	</tr>
 </table>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+<table id="mainTable" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
 		<td colspan="11" >
 			전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
@@ -253,10 +272,11 @@
 			////////////////////////////////////////////////////////////////////////////////////////////  -->
 			<td id="${user.userId}" colspan="11" bgcolor="D6D7D6" height="1"></td>
 		</tr>
+		
 
 	</c:forEach>
 </table>
-<input type="hidden" id="currentPage" name="currentPage" value=""/>
+<input type="hidden" id="currentPage" name="currentPage" value="1"/>
 
 <%-- <!-- PageNavigation Start... -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top:10px;">
